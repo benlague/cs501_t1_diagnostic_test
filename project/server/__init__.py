@@ -19,3 +19,15 @@ db = SQLAlchemy(app)
 
 from project.server.auth.views import auth_blueprint
 app.register_blueprint(auth_blueprint)
+
+from project.server import bcrypt, db
+from project.server.models import User
+
+@app.route('/users/index', methods = ['GET'])
+def UsersIndex():
+    q = db.session.query(User)
+    all_users = []
+    for row in q:
+        all_users.append(row.email)
+    all_users_string = ' '.join(map(str, all_users)) 
+    return all_users_string
